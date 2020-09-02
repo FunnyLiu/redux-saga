@@ -86,7 +86,9 @@ export function* primitiveErrorSaga() {
 }
 
 export default function* rootSaga() {
+  //并行地运行多个 Effect，并等待它们全部完成
   yield all([
+    //在发起（dispatch）到 Store 并且匹配 pattern 的每一个 action 上派生一个 saga
     takeEvery('ACTION_ERROR_IN_PUT', errorInPutSaga),
     takeEvery('ACTION_ERROR_IN_SELECT', errorInSelectSaga),
     takeEvery('ACTION_ERROR_IN_CALL_SYNC', errorInCallSyncSaga),

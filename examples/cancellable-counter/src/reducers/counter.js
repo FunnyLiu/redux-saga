@@ -6,7 +6,7 @@ import {
   CANCEL_INCREMENT_ASYNC,
   COUNTDOWN_TERMINATED,
 } from '../actionTypes'
-
+// 一些具体的数据处理相关函数
 export function countdown(state = 0, action) {
   switch (action.type) {
     case INCREMENT_ASYNC:

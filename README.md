@@ -2,7 +2,24 @@
 
 ## 好的例子
 
-- [异步请求例子](https://github.com/FunnyLiu/redux-saga/blob/readsource/examples/async/README.md#%E8%A7%A3%E8%AF%BB)
+- [异步请求例子](https://github.com/FunnyLiu/redux-saga/blob/readsource/examples/async/README.md#%E8%A7%A3%E8%AF%BB) - aciton/reducer/sagas相互之间配合使用
+
+
+- [可以手动中断的倒计时例子](https://github.com/FunnyLiu/redux-saga/blob/readsource/examples/cancellable-counter/README.md#%E8%A7%A3%E8%AF%BB) - 在saga如何中断promise
+
+
+- [一个基本的计数器](https://github.com/FunnyLiu/redux-saga/blob/readsource/examples/counter/README.md#%E8%A7%A3%E8%AF%BB)
+
+
+
+- [umd的方式在非react场景中用](https://github.com/FunnyLiu/redux-saga/blob/readsource/examples/counter-vanilla/README.md#%E8%A7%A3%E8%AF%BB)
+
+
+- [各种error的表现形式](https://github.com/FunnyLiu/redux-saga/blob/readsource/examples/error-demo/README.md#%E8%A7%A3%E8%AF%BB)
+
+
+- [一个小型项目的最佳实践](https://github.com/FunnyLiu/redux-saga/blob/readsource/examples/real-world/README.md#%E8%A7%A3%E8%AF%BB)
+
 
 
 
