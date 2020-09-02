@@ -7,6 +7,7 @@ import configureStore from './store/configureStore'
 import rootSaga from './sagas'
 
 const store = configureStore()
+// 启动saga
 store.runSaga(rootSaga)
 
 render(

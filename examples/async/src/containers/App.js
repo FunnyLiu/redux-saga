@@ -11,7 +11,7 @@ class App extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleRefreshClick = this.handleRefreshClick.bind(this)
   }
-
+  // 切换选项
   handleChange(nextReddit) {
     this.props.dispatch(selectReddit(nextReddit))
   }
@@ -56,6 +56,7 @@ App.propTypes = {
 }
 
 function mapStateToProps(state) {
+  // 调用reducers
   const { selectedReddit, postsByReddit } = state
   const { isFetching, lastUpdated, items: posts } = postsByReddit[selectedReddit] || {
     isFetching: true,
