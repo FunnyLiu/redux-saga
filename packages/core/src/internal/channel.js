@@ -47,7 +47,7 @@ export function channel(buffer = buffers.expanding()) {
     const cb = takers.shift()
     cb(input)
   }
-
+  // 任务加入takers
   function take(cb) {
     if (process.env.NODE_ENV !== 'production') {
       checkForbiddenStates()

@@ -8,9 +8,10 @@ import { check, logError, noop, wrapSagaDispatch, identity, getMetaInfo } from '
 
 const RUN_SAGA_SIGNATURE = 'runSaga(options, saga, ...args)'
 const NON_GENERATOR_ERR = `${RUN_SAGA_SIGNATURE}: saga argument must be a Generator function!`
-
+// 初始化函数run
 export function runSaga(
   { channel = stdChannel(), dispatch, getState, context = {}, sagaMonitor, effectMiddlewares, onError = logError },
+  //saga为saga文件夹内传入的入口函数，一般为generator函数
   saga,
   ...args
 ) {
@@ -23,7 +24,7 @@ export function runSaga(
   if (process.env.NODE_ENV !== 'production') {
     check(iterator, is.iterator, NON_GENERATOR_ERR)
   }
-
+  // 单例id自增长
   const effectId = nextSagaId()
 
   if (sagaMonitor) {
@@ -79,6 +80,7 @@ export function runSaga(
   }
 
   return immediately(() => {
+    // 入参分别为组装的env，root函数的generator，作用域默认为{}，前面全局自增长的id，元数据，true及undefined
     const task = proc(env, iterator, context, effectId, getMetaInfo(saga), /* isRoot */ true, undefined)
 
     if (sagaMonitor) {

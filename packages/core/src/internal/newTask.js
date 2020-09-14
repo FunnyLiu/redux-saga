@@ -5,7 +5,7 @@ import { RUNNING, CANCELLED, ABORTED, DONE } from './task-status'
 import { assignWithSymbols, check, createSetContextWarning, noop } from './utils'
 import forkQueue from './forkQueue'
 import * as sagaError from './sagaError'
-
+// 创建task，被proc.js调用
 export default function newTask(env, mainTask, parentContext, parentEffectId, meta, isRoot, cont = noop) {
   let status = RUNNING
   let taskResult
@@ -15,6 +15,7 @@ export default function newTask(env, mainTask, parentContext, parentEffectId, me
   const cancelledDueToErrorTasks = []
 
   const context = Object.create(parentContext)
+  // 一个简单的任务队列
   const queue = forkQueue(
     mainTask,
     function onAbort() {

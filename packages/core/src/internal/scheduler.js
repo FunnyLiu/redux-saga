@@ -13,6 +13,7 @@ let semaphore = 0
   and flushed after this task has finished (assuming the scheduler endup in a released
   state).
 **/
+// 执行任务
 function exec(task) {
   try {
     suspend()
@@ -25,6 +26,7 @@ function exec(task) {
 /**
   Executes or queues a task depending on the state of the scheduler (`suspended` or `released`)
 **/
+// 越快越好的执行任务
 export function asap(task) {
   queue.push(task)
 
@@ -39,7 +41,9 @@ export function asap(task) {
  */
 export function immediately(task) {
   try {
+    // 计数器加一
     suspend()
+    // 返回任务对象
     return task()
   } finally {
     flush()
@@ -68,6 +72,7 @@ function flush() {
   release()
 
   let task
+  // 执行任务队列
   while (!semaphore && (task = queue.shift()) !== undefined) {
     exec(task)
   }

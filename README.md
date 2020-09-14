@@ -24,7 +24,94 @@
 
 
 
-<img src='https://redux-saga.js.org/logo/0800/Redux-Saga-Logo-Landscape.png' alt='Redux Logo Landscape' width='800px'>
+## 项目结构
+
+```
+/Users/liufang/openSource/FunnyLiu/redux-saga
+├── packages
+|  ├── babel-plugin-redux-saga
+|  |  └── src
+|  |  |  └── index.js
+|  ├── core
+|  |  ├── scripts
+|  |  |  └── createProxyCjsEntries.js
+|  |  ├── src
+|  |  |  ├── effects.js
+|  |  |  ├── index.js
+|  |  |  └── internal
+|  |  |     ├── buffers.js
+|  |  |     ├── channel.js
+|  |  |     ├── channels-trans-table.png
+|  |  |     ├── effectRunnerMap.js - 不同类型effect的执行MAP及每个effect具体的执行方法
+|  |  |     ├── effectTypes.js
+|  |  |     ├── forkQueue.js - 提供简单的任务队列
+|  |  |     ├── io-helpers.js
+|  |  |     ├── io.js - 提供fork、spawn、join、cancel、call、apply、all、race、put、take等api，底层均调用makeEffect，标注不同的type。每个类型具体的执行函数在effectRunnerMap.js中
+|  |  |     ├── matcher.js
+|  |  |     ├── middleware.js - redux-saga中间件函数
+|  |  |     ├── newTask.js - 提供newTask函数，创建task
+|  |  |     ├── proc.js - 提供proc函数，供runSaga最后一步调用，调用newTask.js中的newTask函数，创建一个task，其runEffect用来执行effectRunnerMap.js提供的不同类型的effect执行方法
+|  |  |     ├── resolvePromise.js
+|  |  |     ├── runSaga.js - run函数执行，组装参数，调用proc.js中的proc函数
+|  |  |     ├── sagaError.js
+|  |  |     ├── sagaHelpers
+|  |  |     |  ├── debounce.js
+|  |  |     |  ├── fsmIterator.js
+|  |  |     |  ├── index.js
+|  |  |     |  ├── retry.js
+|  |  |     |  ├── takeEvery.js
+|  |  |     |  ├── takeLatest.js
+|  |  |     |  ├── takeLeading.js
+|  |  |     |  └── throttle.js
+|  |  |     ├── scheduler.js
+|  |  |     ├── task-status.js
+|  |  |     ├── uid.js
+|  |  |     └── utils.js
+|  ├── deferred
+|  |  └── src
+|  |     └── index.js
+|  ├── delay-p
+|  |  └── src
+|  |     └── index.js
+|  ├── is
+|  |  └── src
+|  |     └── index.js
+|  ├── redux-saga
+|  |  └── src
+|  |     ├── effects.js - 暴露各个effect的api
+|  |     ├── index.js - 入口文件，暴露core中的createSagaMiddleware
+|  |     └── index.umd.js
+|  ├── simple-saga-monitor
+|  |  └── src
+|  |     ├── index.js
+|  |     └── modules
+|  |        ├── DescriptorFormatter.js
+|  |        ├── Formatter.js
+|  |        ├── Manager.js
+|  |        ├── checkers.js
+|  |        ├── consoleGroup.js
+|  |        ├── constants.js
+|  |        └── logSaga.js
+|  ├── symbols
+|  |  └── src
+|  |     └── index.js
+|  ├── testing-utils
+|  |  ├── src
+|  |  |  └── index.js
+```
+
+
+## 整体流程
+
+<img src="https://raw.githubusercontent.com/brizer/graph-bed/master/img/20200914135200.png"/>
+
+典型的生产-消费者模型，通过channel来管理任务队列。
+
+具体的每个effectapi实现都在effectRunnerMap.js中。
+
+通过generator的next方法来进行下一个task的调用。
+
+
 
 # redux-saga
 

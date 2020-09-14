@@ -58,16 +58,18 @@ function createTaskIterator({ context, fn, args }) {
     })
   }
 }
-
+// put
 function runPutEffect(env, { channel, action, resolve }, cb) {
   /**
    Schedule the put in case another saga is holding a lock.
    The put will be executed atomically. ie nested puts will execute after
    this put has terminated.
    **/
+  // 执行actin任务
   asap(() => {
     let result
     try {
+      // 执行同步函数，拿到结果
       result = (channel ? channel.put : env.dispatch)(action)
     } catch (error) {
       cb(error, true)
@@ -82,7 +84,7 @@ function runPutEffect(env, { channel, action, resolve }, cb) {
   })
   // Put effects are non cancellables
 }
-
+// take，将任务加入消费者队列
 function runTakeEffect(env, { channel = env.channel, pattern, maybe }, cb) {
   const takeCb = input => {
     if (input instanceof Error) {
@@ -104,11 +106,12 @@ function runTakeEffect(env, { channel = env.channel, pattern, maybe }, cb) {
   cb.cancel = takeCb.cancel
 }
 
+// call
 function runCallEffect(env, { context, fn, args }, cb, { task }) {
   // catch synchronous failures; see #152
   try {
     const result = fn.apply(context, args)
-
+    // 如果是异步，走异步流程
     if (is.promise(result)) {
       resolvePromise(result, cb)
       return
@@ -149,11 +152,11 @@ function runCPSEffect(env, { context, fn, args }, cb) {
     cb(error, true)
   }
 }
-
+//fork
 function runForkEffect(env, { context, fn, args, detached }, cb, { task: parent }) {
   const taskIterator = createTaskIterator({ context, fn, args })
   const meta = getIteratorMetaInfo(taskIterator, fn)
-
+  // 开启任务队列循环
   immediately(() => {
     const child = proc(env, taskIterator, parent.context, currentEffectId, meta, detached, undefined)
 
@@ -281,7 +284,9 @@ function runRaceEffect(env, effects, cb, { digestEffect }) {
 
 function runSelectEffect(env, { selector, args }, cb) {
   try {
+    // 执行selector，将state传入，选择自己要的
     const state = selector(env.getState(), ...args)
+    // cb 为currCb函数
     cb(state)
   } catch (error) {
     cb(error, true)
@@ -326,7 +331,7 @@ function runSetContextEffect(env, props, cb, { task }) {
   assignWithSymbols(task.context, props)
   cb()
 }
-
+// 不同effect的执行MAP
 const effectRunnerMap = {
   [effectTypes.TAKE]: runTakeEffect,
   [effectTypes.PUT]: runPutEffect,

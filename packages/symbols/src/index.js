@@ -1,5 +1,5 @@
 const createSymbol = name => `@@redux-saga/${name}`
-
+// 通过symbol-like类型管理部分私有变量
 export const CANCEL = createSymbol('CANCEL_PROMISE')
 export const CHANNEL_END_TYPE = createSymbol('CHANNEL_END')
 export const IO = createSymbol('IO')

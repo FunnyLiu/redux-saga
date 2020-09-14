@@ -5,7 +5,7 @@ import { SAGA_LOCATION, SAGA_ACTION, TASK_CANCEL, TERMINATE } from '@redux-saga/
 export const konst = v => () => v
 export const kTrue = konst(true)
 export const kFalse = konst(false)
-
+// 空函数
 let noop = () => {}
 
 if (process.env.NODE_ENV !== 'production' && typeof Proxy !== 'undefined') {
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production' && typeof Proxy !== 'undefined') {
 }
 
 export { noop }
-
+// 一个只返回入参的函数
 export const identity = v => v
 
 const hasSymbol = typeof Symbol === 'function'

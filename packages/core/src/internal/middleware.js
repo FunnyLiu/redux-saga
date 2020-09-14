@@ -9,7 +9,7 @@ export default function sagaMiddlewareFactory({ context = {}, channel = stdChann
   if (process.env.NODE_ENV !== 'production') {
     check(channel, is.channel, 'options.channel passed to the Saga middleware is not a channel')
   }
-
+  
   function sagaMiddleware({ getState, dispatch }) {
     boundRunSaga = runSaga.bind(null, {
       ...options,
@@ -19,7 +19,7 @@ export default function sagaMiddlewareFactory({ context = {}, channel = stdChann
       getState,
       sagaMonitor,
     })
-
+    //给redux的中间件函数
     return next => action => {
       if (sagaMonitor && sagaMonitor.actionDispatched) {
         sagaMonitor.actionDispatched(action)

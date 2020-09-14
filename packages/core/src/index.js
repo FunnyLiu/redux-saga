@@ -1,4 +1,5 @@
 export { CANCEL, SAGA_LOCATION } from '@redux-saga/symbols'
+// 将其内容作为默认值导出
 export { default } from './internal/middleware'
 
 export { runSaga } from './internal/runSaga'

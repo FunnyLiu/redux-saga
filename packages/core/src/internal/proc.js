@@ -12,7 +12,7 @@ export default function proc(env, iterator, parentContext, parentEffectId, meta,
   if (process.env.NODE_ENV !== 'production' && iterator[asyncIteratorSymbol]) {
     throw new Error("redux-saga doesn't support async generators, please use only regular ones")
   }
-
+  // 相当于runEffect，用identity函数套了一层
   const finalRunEffect = env.finalizeRunEffect(runEffect)
 
   /**
@@ -69,6 +69,7 @@ export default function proc(env, iterator, parentContext, parentEffectId, meta,
    *
    * receives either (command | effect result, false) or (any thrown thing, true)
    */
+  // 底层调用generator的next来解决yield区间内容
   function next(arg, isErr) {
     try {
       let result
@@ -98,6 +99,7 @@ export default function proc(env, iterator, parentContext, parentEffectId, meta,
         // We get TERMINATE flag, i.e. by taking from a channel that ended using `take` (and not `takem` used to trap End of channels)
         result = is.func(iterator.return) ? iterator.return() : { done: true }
       } else {
+        // 基于generator语法的next来执行传入的generate的下一个yield内容
         result = iterator.next(arg)
       }
 
@@ -121,7 +123,7 @@ export default function proc(env, iterator, parentContext, parentEffectId, meta,
       mainTask.cont(error, true)
     }
   }
-
+  // 执行各种effect，根据不同的类型
   function runEffect(effect, effectId, currCb) {
     /**
       each effect runner must attach its own logic of cancellation to the provided callback
@@ -138,6 +140,7 @@ export default function proc(env, iterator, parentContext, parentEffectId, meta,
       promise[CANCEL] method in their returned promises
       ATTENTION! calling cancel must have no effect on an already completed or cancelled effect
     **/
+     
     if (is.promise(effect)) {
       resolvePromise(effect, currCb)
     } else if (is.iterator(effect)) {
@@ -164,6 +167,7 @@ export default function proc(env, iterator, parentContext, parentEffectId, meta,
     let effectSettled
 
     // Completion callback passed to the appropriate effect runner
+    // 用来给每个任务回调的函数
     function currCb(res, isErr) {
       if (effectSettled) {
         return
@@ -202,7 +206,7 @@ export default function proc(env, iterator, parentContext, parentEffectId, meta,
 
       env.sagaMonitor && env.sagaMonitor.effectCancelled(effectId)
     }
-
+    // 执行effect
     finalRunEffect(effect, effectId, currCb)
   }
 }

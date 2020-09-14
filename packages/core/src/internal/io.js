@@ -173,7 +173,7 @@ export function cps(fnDescriptor, ...args) {
   }
   return makeEffect(effectTypes.CPS, getFnCallDescriptor(fnDescriptor, args))
 }
-
+// fork函数
 export function fork(fnDescriptor, ...args) {
   if (process.env.NODE_ENV !== 'production') {
     validateFnDescriptor('fork', fnDescriptor)
